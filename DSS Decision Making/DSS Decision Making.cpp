@@ -6,6 +6,7 @@
 using namespace std;
 
 int EMVvalue;
+int arr_subtract[3][3];
 auto Table() {
 	cout << "Enter The Tabel 3x3  : \n";
 
@@ -38,7 +39,7 @@ void Maximax(int arr[3][3]) {
 	int maximax = 0;
 	int NumProjectMaximax = 0;
 
-	for (int a = 0; a < 3; a++)
+	for (int a = 0; a < 3; a++)                                     
 	{
 		int maxvalueMaximax = arr[a][0];
 
@@ -145,7 +146,7 @@ void Minimax_Regret(int arr[3][3]) {
 		{
 			for (int z = i; z < i + 1; z++) // column
 			{
-				arr[x][z] = RNB[i] - arr[x][z];
+				arr_subtract[x][z] = RNB[i] - arr[x][z];
 			}
 
 		}
@@ -153,7 +154,7 @@ void Minimax_Regret(int arr[3][3]) {
 	}
 
 
-	Minimax(arr);
+	Minimax(arr_subtract);
 
 
 }
@@ -199,7 +200,7 @@ void EOL(int arr[3][3], double arrPro[3]) {
 
 		for (int x = 0; x < 3; x++)
 		{
-			arrvalue[i] += (arrPro[x] * arr[i][x]);
+			arrvalue[i] += (arrPro[x] * arr_subtract[i][x]);
 		}
 	}
 
@@ -219,9 +220,38 @@ void EOL(int arr[3][3], double arrPro[3]) {
 	cout << "Number Project : " << NumberProject + 1 << "\n";
 }
 //Way
-void EVPI(double arrPro[3]) {
+void EVPI(int arr[3][3],double arrPro[3]) {
+	int RNB[3];
 
 
+	for (int i = 0; i < 3; i++)// for column 
+	{
+
+		int maxvalueMaximin = arr[0][i];
+
+		for (int x = 0; x < 3; x++) // row
+		{
+
+			for (int z = i; z < i + 1; z++) // column
+			{
+				if (maxvalueMaximin < arr[x][z])
+					maxvalueMaximin = arr[x][z];
+			}
+			RNB[i] = maxvalueMaximin;
+		}
+
+	}
+
+	int EvpiValue=0;
+
+	for (int i = 0; i < 3; i++)
+	{
+		EvpiValue += (RNB[i] * arrPro[i]);
+	}
+
+	
+	cout << ">>>>>>>> EVPI <<<<<<<" << "\n";
+	cout << "Expected Monetary Value : " << EvpiValue-EMVvalue << "\n";
 
 }
 
@@ -251,6 +281,7 @@ int main()
 	cout << "_____________________________________________________\n";
 	cout << "_____________________________________________________\n";
 	cout << "_____________________________________________________\n";
+	
 
 	cout << "Enter the Probability of outcome 1x3: \n";
 	double arrPro[3];
@@ -263,4 +294,8 @@ int main()
 	EMV(arr, arrPro);
 	cout << "_____________________________________________________\n";
 	EOL(arr, arrPro);
+	cout << "_____________________________________________________\n";
+	EVPI(arr, arrPro);
+	
+
 }
